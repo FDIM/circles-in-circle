@@ -1,0 +1,84 @@
+<html>
+<head>
+<style>
+body{
+  display:flex;
+}
+svg{
+  width:512px;
+  height: 512px;
+  border:1px solid blue;
+  margin: auto;
+}
+svg circle{
+  fill: rgba(255,0,0,0.2);
+}
+svg circle:first-child{
+  fill: rgba(255,0,0,0.2);
+
+}
+</style>
+</head>
+<body>
+<svg id="Layer_1" version="1.1" viewBox="0 0 100 100" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+</svg>
+<script>
+  var namespace = "http://www.w3.org/2000/svg";
+  var svg = document.querySelector('svg');
+  var radius = 10000;
+  var split = 2;
+
+  svg.setAttribute('viewBox','0 0 '+(2*radius)+' '+ (2*radius));
+
+  svg.appendChild(createCircle(radius, radius,radius));
+  computeInnerCircles(radius, split).forEach(function(item){
+    svg.appendChild(createCircle.apply(this, [item[0]+radius, item[1]+radius, item[2]]));
+  });
+  function createCircle(x, y, radius){
+    var circle = document.createElementNS(namespace, 'circle');
+    circle.setAttribute('cx', x);
+    circle.setAttribute('cy', y);
+    circle.setAttribute('r', radius);
+    return circle;
+  }
+  function computeInnerCircles(radius, split){
+    var r = radius / split, constant;
+    if(split == 3){
+      constant = 2;
+      return [
+        [0,0,r],
+        [r*constant,0,r],
+        [-r*constant,0,r],
+        [0,r*constant,r],
+        [0,-r*constant,r],
+        [r*constant/2.0,r,r],
+        [r*constant/2.0,r*constant,r],
+        [r*constant,r,r],
+        [r*constant/2.0,-r,r],
+        [r*constant/2.0,-r*constant,r],
+        [r*constant,-r,r],
+        [-r*constant/2.0,r,r],
+        [-r*constant/2,r*constant,r],
+        [-r*constant,r,r],
+        [-r*constant/2.0,-r,r],
+        [-r*constant/2.0,-r*constant,r],
+        [-r*constant,-r,r],
+      ];
+    }else if(split == 2){
+      constant = 1.5;
+      return [
+        [0,0,r],
+        [r*constant,0,r],
+        [-r*constant,0,r],
+        [r*constant/2.0,r,r],
+        [r*constant/2.0,-r,r],
+        [-r*constant/2.0,r,r],
+        [-r*constant/2.0,-r,r],
+      ];
+    }else{
+      return [[0,0,r]];
+    }
+  }
+</script>
+</body>
+</html>
